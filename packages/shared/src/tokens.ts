@@ -74,6 +74,7 @@ export const tokens = {
     },
     highlight: {
       indigo: '#a5b4fc',       // Indigo-300 — stat values, badges on dark
+      violet: '#a78bfa',       // Violet-400 — gradient accents
       orange: '#f97316',       // Orange-500 — urgency accent
       fuchsia: '#fae8ff',      // Fuchsia-100 — experiment card bg
     },

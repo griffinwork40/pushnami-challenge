@@ -144,7 +144,7 @@ const styles: Record<string, React.CSSProperties> = {
   logo: {
     fontSize: '1.4rem',
     fontWeight: 800,
-    background: `linear-gradient(135deg, ${tokens.color.brand.accent}, #a78bfa)`,
+    background: `linear-gradient(135deg, ${tokens.color.brand.accent}, ${tokens.color.highlight.violet})`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     letterSpacing: '-0.02em',
