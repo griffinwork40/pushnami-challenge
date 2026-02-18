@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@pushnami/shared": ["../../packages/shared/src"],
+      "@pushnami/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["src"]
+}

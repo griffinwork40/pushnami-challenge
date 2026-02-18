@@ -1,0 +1,8 @@
+{
+  "name": "pushnami-challenge",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ]
+}

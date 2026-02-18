@@ -1,0 +1,101 @@
+version: '3.9'
+
+services:
+  # ─── PostgreSQL ───────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pushnami
+      POSTGRES_PASSWORD: pushnami_dev
+      POSTGRES_DB: pushnami
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pushnami"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ─── A/B Test Service ─────────────────────────────────────────────────────
+  ab-service:
+    build:
+      context: .
+      dockerfile: services/ab-service/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://pushnami:pushnami_dev@postgres:5432/pushnami
+      NODE_ENV: production
+      LOG_LEVEL: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # ─── Metrics Service ──────────────────────────────────────────────────────
+  metrics:
+    build:
+      context: .
+      dockerfile: services/metrics/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      DATABASE_URL: postgres://pushnami:pushnami_dev@postgres:5432/pushnami
+      NODE_ENV: production
+      LOG_LEVEL: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3002/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # ─── Landing Page ─────────────────────────────────────────────────────────
+  landing:
+    build:
+      context: .
+      dockerfile: services/landing/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      AB_SERVICE_URL: http://ab-service:3001
+      METRICS_SERVICE_URL: http://metrics:3002
+      NODE_ENV: production
+    depends_on:
+      ab-service:
+        condition: service_healthy
+      metrics:
+        condition: service_healthy
+
+  # ─── Admin Dashboard ──────────────────────────────────────────────────────
+  admin:
+    build:
+      context: .
+      dockerfile: services/admin/Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      AB_SERVICE_URL: http://ab-service:3001
+      METRICS_SERVICE_URL: http://metrics:3002
+      NODE_ENV: production
+    depends_on:
+      ab-service:
+        condition: service_healthy
+      metrics:
+        condition: service_healthy
+
+volumes:
+  pgdata:
