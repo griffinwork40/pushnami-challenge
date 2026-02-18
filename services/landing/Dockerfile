@@ -23,7 +23,11 @@ ENV METRICS_SERVICE_URL=$METRICS_SERVICE_URL
 
 RUN npm run build
 
-EXPOSE 3000
-ENV PORT=3000
+# Copy static assets into standalone output (required for output: 'standalone')
+RUN cp -r .next/static .next/standalone/services/landing/.next/static 2>/dev/null || true
+RUN cp -r public .next/standalone/services/landing/public 2>/dev/null || true
 
-CMD ["npm", "start"]
+EXPOSE 3000
+ENV PORT=3000 HOSTNAME=0.0.0.0
+
+CMD ["node", ".next/standalone/services/landing/server.js"]

@@ -23,7 +23,11 @@ ENV METRICS_SERVICE_URL=$METRICS_SERVICE_URL
 
 RUN npm run build
 
-EXPOSE 3003
-ENV PORT=3003
+# Copy static assets into standalone output (required for output: 'standalone')
+RUN cp -r .next/static .next/standalone/services/admin/.next/static 2>/dev/null || true
+RUN cp -r public .next/standalone/services/admin/public 2>/dev/null || true
 
-CMD ["npm", "start"]
+EXPOSE 3003
+ENV PORT=3003 HOSTNAME=0.0.0.0
+
+CMD ["node", ".next/standalone/services/admin/server.js"]
