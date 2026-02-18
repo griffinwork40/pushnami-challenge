@@ -28,7 +28,7 @@ export default function StatsOverview({ stats }: Props) {
     { label: 'Total Visitors',    value: totalVisitors.toLocaleString(), icon: '👥', color: tokens.color.status.infoBg },
     { label: 'Total Events',      value: totalEvents.toLocaleString(),   icon: '📈', color: tokens.color.status.successBg },
     { label: 'Avg Conversion',    value: `${(avgConversion * 100).toFixed(2)}%`, icon: '🎯', color: tokens.color.status.warningBg },
-    { label: 'Active Experiments', value: String(stats.length),          icon: '🧪', color: '#fae8ff' },
+    { label: 'Active Experiments', value: String(stats.length),          icon: '🧪', color: tokens.color.highlight.fuchsia },
   ];
 
   return (

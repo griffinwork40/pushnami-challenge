@@ -41,7 +41,7 @@ const styles: Record<string, React.CSSProperties> = {
   badge: {
     display: 'inline-block',
     background: 'rgba(99,102,241,0.15)',
-    color: '#a5b4fc',
+    color: tokens.color.highlight.indigo,
     border: '1px solid rgba(99,102,241,0.3)',
     borderRadius: tokens.radius.full,
     padding: '6px 16px',

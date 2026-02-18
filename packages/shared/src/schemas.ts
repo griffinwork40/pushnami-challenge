@@ -36,7 +36,10 @@ export const UpdateExperimentSchema = z.object({
   description: z.string().max(1000).optional(),
   status: z.enum(EXPERIMENT_STATUSES).optional(),
   trafficSplit: z.array(z.number().min(0).max(100)).optional(),
-});
+}).refine(
+  (data) => !data.trafficSplit || data.trafficSplit.reduce((a, b) => a + b, 0) === 100,
+  { message: 'trafficSplit must sum to 100' },
+);
 
 export const IngestEventSchema = z.object({
   visitorId: z.string().uuid(),

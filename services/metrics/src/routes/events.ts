@@ -26,13 +26,20 @@ const events: FastifyPluginAsync = async (fastify) => {
         });
       }
 
-      const result = await insertEvent(parseResult.data);
-
-      return reply.status(201).send({
-        id: result.id,
-        createdAt: result.createdAt,
-        message: 'Event recorded',
-      });
+      try {
+        const result = await insertEvent(parseResult.data);
+        return reply.status(201).send({
+          id: result.id,
+          createdAt: result.createdAt,
+          message: 'Event recorded',
+        });
+      } catch (err: unknown) {
+        const statusCode = (err as { statusCode?: number }).statusCode;
+        if (statusCode === 400) {
+          return reply.status(400).send({ error: (err as Error).message });
+        }
+        throw err;
+      }
     },
   );
 
@@ -54,12 +61,19 @@ const events: FastifyPluginAsync = async (fastify) => {
         });
       }
 
-      const { count } = await insertEventBatch(parseResult.data.events);
-
-      return reply.status(201).send({
-        count,
-        message: `${count} event(s) recorded`,
-      });
+      try {
+        const { count } = await insertEventBatch(parseResult.data.events);
+        return reply.status(201).send({
+          count,
+          message: `${count} event(s) recorded`,
+        });
+      } catch (err: unknown) {
+        const statusCode = (err as { statusCode?: number }).statusCode;
+        if (statusCode === 400) {
+          return reply.status(400).send({ error: (err as Error).message });
+        }
+        throw err;
+      }
     },
   );
 };

@@ -25,6 +25,9 @@ export async function assignmentRoutes(fastify: FastifyInstance): Promise<void> 
       if (statusCode === 404) {
         return reply.status(404).send({ error: 'Experiment not found or has no variants' });
       }
+      if (statusCode === 409) {
+        return reply.status(409).send({ error: (err as Error).message });
+      }
       fastify.log.error({ err }, 'Failed to assign visitor');
       return reply.status(500).send({ error: 'Internal server error' });
     }

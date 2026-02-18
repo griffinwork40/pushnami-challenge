@@ -72,7 +72,7 @@ export default function ClientPage({
 
       <div style={{ textAlign: 'center', paddingBottom: tokens.space['2xl'] }}>
         <CTAButton aggressive={ctaStyleAggressive} onClick={handleCTAClick} />
-        {experimentId && (
+        {experimentId && process.env.NODE_ENV === 'development' && (
           <p style={styles.variantTag}>
             Variant: <code style={styles.code}>{variantName}</code>
           </p>
@@ -183,7 +183,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'block',
     fontSize: '2rem',
     fontWeight: 800,
-    color: '#a5b4fc',
+    color: tokens.color.highlight.indigo,
     letterSpacing: '-0.02em',
   },
   statLabel: { fontSize: '0.8rem', color: tokens.color.text.secondary },

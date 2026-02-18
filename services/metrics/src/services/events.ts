@@ -7,11 +7,33 @@ export interface InsertEventResult {
 }
 
 /**
+ * Validate that a variant belongs to the given experiment.
+ */
+async function validateVariantBelongsToExperiment(
+  experimentId: string,
+  variantId: string,
+): Promise<void> {
+  const { rows } = await pool.query<{ id: string }>(
+    `SELECT id FROM variants WHERE id = $1 AND experiment_id = $2`,
+    [variantId, experimentId],
+  );
+  if (rows.length === 0) {
+    const err = Object.assign(
+      new Error(`Variant ${variantId} does not belong to experiment ${experimentId}`),
+      { statusCode: 400 },
+    );
+    throw err;
+  }
+}
+
+/**
  * Insert a single tracking event into the database.
  */
 export async function insertEvent(
   event: IngestEventRequest,
 ): Promise<InsertEventResult> {
+  await validateVariantBelongsToExperiment(event.experimentId, event.variantId);
+
   const { rows } = await pool.query<{ id: string; created_at: Date }>(
     `INSERT INTO events (visitor_id, experiment_id, variant_id, event_type, metadata)
      VALUES ($1, $2, $3, $4, $5)
@@ -40,6 +62,20 @@ export async function insertEventBatch(
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+
+    // Validate all variant-experiment pairs
+    for (const ev of events) {
+      const check = await client.query<{ id: string }>(
+        `SELECT id FROM variants WHERE id = $1 AND experiment_id = $2`,
+        [ev.variantId, ev.experimentId],
+      );
+      if (check.rows.length === 0) {
+        throw Object.assign(
+          new Error(`Variant ${ev.variantId} does not belong to experiment ${ev.experimentId}`),
+          { statusCode: 400 },
+        );
+      }
+    }
 
     // Build multi-row INSERT with parameterized values
     const placeholders: string[] = [];

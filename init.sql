@@ -43,8 +43,8 @@ CREATE INDEX idx_assignments_experiment ON assignments(experiment_id);
 CREATE TABLE events (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   visitor_id UUID NOT NULL,
-  experiment_id UUID NOT NULL,
-  variant_id UUID NOT NULL,
+  experiment_id UUID NOT NULL REFERENCES experiments(id) ON DELETE CASCADE,
+  variant_id UUID NOT NULL REFERENCES variants(id) ON DELETE CASCADE,
   event_type VARCHAR(50) NOT NULL CHECK (event_type IN ('page_view', 'click', 'form_submit', 'cta_click', 'scroll_depth')),
   metadata JSONB NOT NULL DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

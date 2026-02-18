@@ -72,7 +72,24 @@ export async function assignVisitor(
       };
     }
 
-    // 2. Load variants for this experiment (ordered for determinism)
+    // 2. Check experiment exists and is active
+    const expResult = await client.query<{ status: string }>(
+      `SELECT status FROM experiments WHERE id = $1`,
+      [experimentId],
+    );
+
+    if (expResult.rows.length === 0) {
+      throw Object.assign(new Error('Experiment not found'), { statusCode: 404 });
+    }
+
+    if (expResult.rows[0]!.status !== 'active') {
+      throw Object.assign(
+        new Error(`Experiment is ${expResult.rows[0]!.status} — assignments only allowed for active experiments`),
+        { statusCode: 409 },
+      );
+    }
+
+    // 3. Load variants for this experiment (ordered for determinism)
     const variants = await client.query<VariantRow>(
       `SELECT id, name, traffic_pct
        FROM variants
@@ -82,14 +99,14 @@ export async function assignVisitor(
     );
 
     if (variants.rows.length === 0) {
-      throw Object.assign(new Error('Experiment not found or has no variants'), { statusCode: 404 });
+      throw Object.assign(new Error('Experiment has no variants'), { statusCode: 404 });
     }
 
-    // 3. Deterministically pick variant
+    // 4. Deterministically pick variant
     const bucket = computeBucket(visitorId, experimentId);
     const chosen = pickVariant(bucket, variants.rows);
 
-    // 4. Persist assignment (ON CONFLICT DO NOTHING handles race conditions)
+    // 5. Persist assignment (ON CONFLICT DO NOTHING handles race conditions)
     await client.query(
       `INSERT INTO assignments (visitor_id, experiment_id, variant_id)
        VALUES ($1, $2, $3)
@@ -97,7 +114,7 @@ export async function assignVisitor(
       [visitorId, experimentId, chosen.id],
     );
 
-    // 5. Re-fetch in case of race (another request won the INSERT)
+    // 6. Re-fetch in case of race (another request won the INSERT)
     const final = await client.query<{ variant_id: string; variant_name: string }>(
       `SELECT a.variant_id, v.name AS variant_name
        FROM assignments a

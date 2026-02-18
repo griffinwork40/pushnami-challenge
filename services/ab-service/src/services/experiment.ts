@@ -93,21 +93,38 @@ export async function createExperiment(input: CreateExperimentInput): Promise<Ex
 }
 
 export async function updateExperiment(id: string, input: UpdateExperimentInput): Promise<Experiment | null> {
-  const fields: string[] = [];
-  const values: unknown[] = [];
-  let idx = 1;
+  return withClient(async (client) => {
+    const fields: string[] = [];
+    const values: unknown[] = [];
+    let idx = 1;
 
-  if (input.name !== undefined) { fields.push(`name = $${idx++}`); values.push(input.name); }
-  if (input.description !== undefined) { fields.push(`description = $${idx++}`); values.push(input.description); }
-  if (input.status !== undefined) { fields.push(`status = $${idx++}`); values.push(input.status); }
-  fields.push(`updated_at = NOW()`);
-  values.push(id);
+    if (input.name !== undefined) { fields.push(`name = $${idx++}`); values.push(input.name); }
+    if (input.description !== undefined) { fields.push(`description = $${idx++}`); values.push(input.description); }
+    if (input.status !== undefined) { fields.push(`status = $${idx++}`); values.push(input.status); }
+    fields.push(`updated_at = NOW()`);
+    values.push(id);
 
-  await query(
-    `UPDATE experiments SET ${fields.join(', ')} WHERE id = $${idx}`,
-    values,
-  );
-  return getExperiment(id);
+    await client.query(
+      `UPDATE experiments SET ${fields.join(', ')} WHERE id = $${idx}`,
+      values,
+    );
+
+    // Update variant traffic percentages if trafficSplit is provided
+    if (input.trafficSplit) {
+      const variants = await client.query<{ id: string }>(
+        `SELECT id FROM variants WHERE experiment_id = $1 ORDER BY created_at ASC`,
+        [id],
+      );
+      for (let i = 0; i < variants.rows.length && i < input.trafficSplit.length; i++) {
+        await client.query(
+          `UPDATE variants SET traffic_pct = $1 WHERE id = $2`,
+          [input.trafficSplit[i], variants.rows[i]!.id],
+        );
+      }
+    }
+
+    return getExperiment(id);
+  });
 }
 
 // ─── Feature Toggle Service ───────────────────────────────────────────────────

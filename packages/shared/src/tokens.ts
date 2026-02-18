@@ -67,6 +67,16 @@ export const tokens = {
       aggressiveHover: '#dc2626', // Red-600
       aggressivePulse: 'rgba(239,68,68,0.3)',
     },
+
+    // ─── Chart / Misc ─────────────────────────────────────────────────
+    chart: {
+      cyan: '#06b6d4',         // Cyan-500 — chart palette fallback
+    },
+    highlight: {
+      indigo: '#a5b4fc',       // Indigo-300 — stat values, badges on dark
+      orange: '#f97316',       // Orange-500 — urgency accent
+      fuchsia: '#fae8ff',      // Fuchsia-100 — experiment card bg
+    },
   },
 
   // ─── Shadows ──────────────────────────────────────────────────────────

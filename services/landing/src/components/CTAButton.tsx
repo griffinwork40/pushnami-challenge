@@ -50,7 +50,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '16px 0 8px',
   },
   urgency: {
-    color: '#f97316',
+    color: tokens.color.highlight.orange,
     fontWeight: 700,
     fontSize: '0.9rem',
     marginBottom: '12px',

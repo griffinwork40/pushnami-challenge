@@ -16,7 +16,7 @@ const CHART_PALETTE = [
   tokens.color.status.warning,
   tokens.color.status.error,
   tokens.color.brand.accent,
-  '#06b6d4', // cyan-500 — only for 6+ variant edge case
+  tokens.color.chart.cyan, // cyan-500 — only for 6+ variant edge case
 ];
 
 export default function VariantChart({ stats }: Props) {
