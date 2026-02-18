@@ -3,15 +3,14 @@ RUN apk add --no-cache wget
 
 WORKDIR /app
 
-# Install dependencies
-COPY package.json ./
+# ─── Install deps (monorepo-aware) ───────────────────────────────────────────
+COPY package.json package-lock.json* ./
 COPY packages/shared/package.json packages/shared/
 COPY services/metrics/package.json services/metrics/
 
-RUN cd packages/shared && npm install
-RUN cd services/metrics && npm install
+RUN npm install --workspace=packages/shared --workspace=services/metrics
 
-# Copy source
+# ─── Copy source ──────────────────────────────────────────────────────────────
 COPY packages/shared packages/shared
 COPY services/metrics services/metrics
 
