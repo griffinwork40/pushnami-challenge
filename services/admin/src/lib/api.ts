@@ -49,8 +49,25 @@ export async function updateExperiment(id: string, data: UpdateExperimentRequest
 // ─── Stats ────────────────────────────────────────────────────────────────────
 
 export async function fetchStats(experimentId?: string): Promise<ExperimentStats[]> {
-  const url = experimentId ? `/api/stats?experimentId=${experimentId}` : '/api/stats';
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch stats: ${res.statusText}`);
-  return res.json();
+  if (experimentId) {
+    const res = await fetch(`/api/stats?experimentId=${experimentId}`);
+    if (!res.ok) throw new Error(`Failed to fetch stats: ${res.statusText}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : [data];
+  }
+
+  // No experimentId — fetch all experiments, then stats for each
+  const experiments = await fetchExperiments();
+  const results = await Promise.allSettled(
+    experiments.map(async (exp) => {
+      const res = await fetch(`/api/stats?experimentId=${exp.id}`);
+      if (!res.ok) return null;
+      return res.json();
+    }),
+  );
+
+  return results
+    .filter((r): r is PromiseFulfilledResult<ExperimentStats> =>
+      r.status === 'fulfilled' && r.value !== null)
+    .map((r) => r.value);
 }
