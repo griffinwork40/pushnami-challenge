@@ -1,6 +1,7 @@
 'use client';
 
 import type { FeatureToggle } from '@pushnami/shared/types';
+import { tokens } from '@pushnami/shared';
 
 interface Props {
   toggle: FeatureToggle;
@@ -19,12 +20,11 @@ export default function ToggleCard({ toggle, onToggle, updating }: Props) {
           </span>
         </div>
         <div style={{ fontSize: '.85rem', color: 'var(--text-secondary)' }}>{toggle.description}</div>
-        <div style={{ fontSize: '.75rem', color: '#94a3b8', marginTop: 4 }}>
+        <div style={{ fontSize: '.75rem', color: tokens.color.text.muted, marginTop: 4 }}>
           Last updated: {new Date(toggle.updatedAt).toLocaleString()}
         </div>
       </div>
 
-      {/* Toggle Switch */}
       <button
         onClick={() => onToggle(toggle.id, !toggle.enabled)}
         disabled={updating}
@@ -35,7 +35,7 @@ export default function ToggleCard({ toggle, onToggle, updating }: Props) {
           height: 28,
           borderRadius: 14,
           border: 'none',
-          background: toggle.enabled ? 'var(--green)' : '#cbd5e1',
+          background: toggle.enabled ? tokens.color.status.success : tokens.color.border.default,
           cursor: updating ? 'not-allowed' : 'pointer',
           transition: 'background .2s',
           flexShrink: 0,
@@ -49,8 +49,8 @@ export default function ToggleCard({ toggle, onToggle, updating }: Props) {
           width: 22,
           height: 22,
           borderRadius: '50%',
-          background: '#fff',
-          boxShadow: '0 1px 3px rgba(0,0,0,.2)',
+          background: tokens.color.surface.card,
+          boxShadow: tokens.shadow.sm,
           transition: 'left .2s',
         }} />
       </button>

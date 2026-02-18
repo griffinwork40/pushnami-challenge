@@ -1,3 +1,5 @@
+import { tokens } from '@pushnami/shared';
+
 const TESTIMONIALS = [
   {
     quote:
@@ -68,18 +70,18 @@ const styles: Record<string, React.CSSProperties> = {
   logoLabel: {
     fontSize: '0.7rem',
     letterSpacing: '0.15em',
-    color: '#475569',
-    marginBottom: '16px',
+    color: tokens.color.text.secondary,
+    marginBottom: tokens.space.md,
     fontWeight: 600,
   },
   logos: {
     display: 'flex',
     justifyContent: 'center',
     gap: '36px',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap' as const,
   },
   logo: {
-    color: '#475569',
+    color: tokens.color.text.secondary,
     fontWeight: 700,
     fontSize: '1rem',
     letterSpacing: '0.03em',
@@ -87,7 +89,7 @@ const styles: Record<string, React.CSSProperties> = {
   heading: {
     fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
     fontWeight: 800,
-    color: '#f1f5f9',
+    color: tokens.color.text.inverse,
     marginBottom: '36px',
     letterSpacing: '-0.01em',
   },
@@ -98,13 +100,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   card: {
     background: 'rgba(30,41,59,0.7)',
-    border: '1px solid rgba(99,102,241,0.15)',
+    border: `1px solid ${tokens.color.border.dark}`,
     borderRadius: '14px',
     padding: '28px 24px',
-    textAlign: 'left',
+    textAlign: 'left' as const,
   },
   quote: {
-    color: '#cbd5e1',
+    color: tokens.color.text.inverseMuted,
     lineHeight: 1.7,
     fontSize: '0.95rem',
     marginBottom: '20px',
@@ -120,11 +122,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   authorName: {
     fontWeight: 700,
-    color: '#e2e8f0',
+    color: tokens.color.border.default,
     fontSize: '0.9rem',
   },
   authorRole: {
-    color: '#64748b',
+    color: tokens.color.text.secondary,
     fontSize: '0.8rem',
     marginTop: '2px',
   },

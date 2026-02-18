@@ -6,6 +6,7 @@ import FeatureGrid from '@/components/FeatureGrid';
 import SocialProof from '@/components/SocialProof';
 import CTAButton from '@/components/CTAButton';
 import { trackEvent, setupScrollTracking } from '@/lib/tracking';
+import { tokens } from '@pushnami/shared';
 
 interface ClientPageProps {
   visitorId: string;
@@ -46,7 +47,6 @@ export default function ClientPage({
 
   function handleCTAClick() {
     trackEvent({ ...ctx, eventType: 'cta_click' });
-    // Scroll to newsletter form
     document.getElementById('newsletter')?.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -59,7 +59,6 @@ export default function ClientPage({
 
   return (
     <div style={styles.page}>
-      {/* Nav */}
       <nav style={styles.nav}>
         <span style={styles.logo}>Pushnami</span>
         <div style={styles.navLinks}>
@@ -69,11 +68,9 @@ export default function ClientPage({
         </div>
       </nav>
 
-      {/* Hero */}
       {showHeroBanner && <HeroSection variantName={variantName} />}
 
-      {/* Primary CTA */}
-      <div style={{ textAlign: 'center', paddingBottom: '48px' }}>
+      <div style={{ textAlign: 'center', paddingBottom: tokens.space['2xl'] }}>
         <CTAButton aggressive={ctaStyleAggressive} onClick={handleCTAClick} />
         {experimentId && (
           <p style={styles.variantTag}>
@@ -82,7 +79,6 @@ export default function ClientPage({
         )}
       </div>
 
-      {/* Stats bar */}
       <div style={styles.statsBar}>
         {[['500M+', 'Subscribers reached'], ['99.9%', 'Uptime SLA'], ['10x', 'Average ROI'], ['5,000+', 'Happy customers']].map(([val, label]) => (
           <div key={label} style={styles.stat}>
@@ -92,15 +88,12 @@ export default function ClientPage({
         ))}
       </div>
 
-      {/* Features */}
       <div id="features"><FeatureGrid /></div>
 
-      {/* Social Proof */}
       {enableSocialProof && (
         <div id="testimonials"><SocialProof /></div>
       )}
 
-      {/* Newsletter / Email CTA */}
       <section id="newsletter" style={styles.newsletter}>
         <h2 style={styles.nlHeading}>Ready to grow? Start free today.</h2>
         <p style={styles.nlSub}>Join 5,000+ businesses already using Pushnami.</p>
@@ -125,7 +118,6 @@ export default function ClientPage({
         )}
       </section>
 
-      {/* Footer */}
       <footer style={styles.footer}>
         <p>© 2026 Pushnami, Inc. · Privacy · Terms</p>
       </footer>
@@ -133,14 +125,16 @@ export default function ClientPage({
   );
 }
 
+// ─── Styles (all colors via design tokens) ────────────────────────────────────
+
 const styles: Record<string, React.CSSProperties> = {
-  page: { minHeight: '100vh', color: '#e2e8f0' },
+  page: { minHeight: '100vh', color: tokens.color.border.default },
   nav: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '20px 40px',
-    borderBottom: '1px solid rgba(99,102,241,0.15)',
+    borderBottom: `1px solid ${tokens.color.border.dark}`,
     background: 'rgba(15,23,42,0.95)',
     position: 'sticky' as const,
     top: 0,
@@ -150,38 +144,38 @@ const styles: Record<string, React.CSSProperties> = {
   logo: {
     fontSize: '1.4rem',
     fontWeight: 800,
-    background: 'linear-gradient(135deg, #6366f1, #a78bfa)',
+    background: `linear-gradient(135deg, ${tokens.color.brand.accent}, #a78bfa)`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     letterSpacing: '-0.02em',
   },
   navLinks: { display: 'flex', gap: '28px' },
   navLink: {
-    color: '#94a3b8',
+    color: tokens.color.text.inverseMuted,
     textDecoration: 'none',
     fontSize: '0.9rem',
     fontWeight: 500,
   },
   variantTag: {
-    marginTop: '16px',
+    marginTop: tokens.space.md,
     fontSize: '0.75rem',
-    color: '#334155',
+    color: tokens.color.border.dark,
   },
   code: {
     background: 'rgba(99,102,241,0.1)',
-    color: '#818cf8',
+    color: tokens.color.brand.accent,
     padding: '2px 6px',
-    borderRadius: '4px',
+    borderRadius: tokens.radius.sm,
     fontSize: '0.75rem',
   },
   statsBar: {
     display: 'flex',
     justifyContent: 'center',
-    gap: '48px',
+    gap: tokens.space['2xl'],
     flexWrap: 'wrap' as const,
-    padding: '32px 24px',
-    borderTop: '1px solid rgba(99,102,241,0.1)',
-    borderBottom: '1px solid rgba(99,102,241,0.1)',
+    padding: `${tokens.space.xl} ${tokens.space.lg}`,
+    borderTop: `1px solid ${tokens.color.border.dark}`,
+    borderBottom: `1px solid ${tokens.color.border.dark}`,
     background: 'rgba(30,41,59,0.4)',
   },
   stat: { textAlign: 'center' as const },
@@ -192,20 +186,20 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#a5b4fc',
     letterSpacing: '-0.02em',
   },
-  statLabel: { fontSize: '0.8rem', color: '#64748b' },
+  statLabel: { fontSize: '0.8rem', color: tokens.color.text.secondary },
   newsletter: {
     textAlign: 'center' as const,
     padding: '80px 24px',
     background: 'rgba(30,41,59,0.5)',
-    borderTop: '1px solid rgba(99,102,241,0.15)',
+    borderTop: `1px solid ${tokens.color.border.dark}`,
   },
   nlHeading: {
     fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
     fontWeight: 800,
-    color: '#f1f5f9',
+    color: tokens.color.text.inverse,
     marginBottom: '12px',
   },
-  nlSub: { color: '#64748b', marginBottom: '32px' },
+  nlSub: { color: tokens.color.text.secondary, marginBottom: tokens.space.xl },
   form: {
     display: 'flex',
     gap: '12px',
@@ -218,19 +212,19 @@ const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     minWidth: '220px',
     padding: '14px 18px',
-    borderRadius: '8px',
-    border: '1px solid rgba(99,102,241,0.3)',
+    borderRadius: tokens.radius.md,
+    border: `1px solid ${tokens.color.border.dark}`,
     background: 'rgba(15,23,42,0.9)',
-    color: '#e2e8f0',
+    color: tokens.color.border.default,
     fontSize: '0.95rem',
     outline: 'none',
   },
   submitBtn: {
     padding: '14px 28px',
-    borderRadius: '8px',
+    borderRadius: tokens.radius.md,
     border: 'none',
-    background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
-    color: '#fff',
+    background: `linear-gradient(135deg, ${tokens.color.brand.accent}, ${tokens.color.brand.accentHover})`,
+    color: tokens.color.text.inverse,
     fontWeight: 700,
     fontSize: '0.95rem',
     cursor: 'pointer',
@@ -239,17 +233,17 @@ const styles: Record<string, React.CSSProperties> = {
   successBox: {
     display: 'inline-block',
     padding: '16px 32px',
-    background: 'rgba(16,185,129,0.1)',
-    border: '1px solid rgba(16,185,129,0.3)',
-    borderRadius: '10px',
-    color: '#6ee7b7',
+    background: tokens.color.status.successBg,
+    border: `1px solid ${tokens.color.status.successBorder}`,
+    borderRadius: tokens.radius.lg,
+    color: tokens.color.status.success,
     fontWeight: 600,
   },
   footer: {
     textAlign: 'center' as const,
     padding: '28px 24px',
-    color: '#334155',
+    color: tokens.color.border.dark,
     fontSize: '0.8rem',
-    borderTop: '1px solid rgba(99,102,241,0.1)',
+    borderTop: `1px solid ${tokens.color.border.dark}`,
   },
 };

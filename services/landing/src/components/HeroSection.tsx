@@ -1,3 +1,5 @@
+import { tokens } from '@pushnami/shared';
+
 interface HeroSectionProps {
   variantName: string;
 }
@@ -41,24 +43,24 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'rgba(99,102,241,0.15)',
     color: '#a5b4fc',
     border: '1px solid rgba(99,102,241,0.3)',
-    borderRadius: '999px',
+    borderRadius: tokens.radius.full,
     padding: '6px 16px',
     fontSize: '13px',
     fontWeight: 600,
-    marginBottom: '24px',
+    marginBottom: tokens.space.lg,
     letterSpacing: '0.02em',
   },
   headline: {
     fontSize: 'clamp(2rem, 5vw, 3.5rem)',
     fontWeight: 800,
     lineHeight: 1.15,
-    color: '#f1f5f9',
+    color: tokens.color.text.inverse,
     margin: '0 0 20px',
     letterSpacing: '-0.02em',
   },
   subtext: {
     fontSize: '1.15rem',
-    color: '#94a3b8',
+    color: tokens.color.text.inverseMuted,
     lineHeight: 1.7,
     maxWidth: '600px',
     margin: '0 auto',

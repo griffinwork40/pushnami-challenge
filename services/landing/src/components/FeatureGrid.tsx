@@ -1,3 +1,5 @@
+import { tokens } from '@pushnami/shared';
+
 const FEATURES = [
   {
     icon: '⚡',
@@ -59,13 +61,13 @@ const styles: Record<string, React.CSSProperties> = {
   heading: {
     fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
     fontWeight: 800,
-    color: '#f1f5f9',
+    color: tokens.color.text.inverse,
     marginBottom: '12px',
     letterSpacing: '-0.01em',
   },
   sub: {
-    color: '#64748b',
-    marginBottom: '48px',
+    color: tokens.color.text.secondary,
+    marginBottom: tokens.space['2xl'],
     fontSize: '1.05rem',
   },
   grid: {
@@ -78,7 +80,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid rgba(99,102,241,0.15)',
     borderRadius: '14px',
     padding: '28px 24px',
-    textAlign: 'left',
+    textAlign: 'left' as const,
     transition: 'border-color 0.2s',
   },
   icon: {
@@ -88,12 +90,12 @@ const styles: Record<string, React.CSSProperties> = {
   cardTitle: {
     fontSize: '1.05rem',
     fontWeight: 700,
-    color: '#e2e8f0',
-    marginBottom: '8px',
+    color: tokens.color.border.default,
+    marginBottom: tokens.space.sm,
   },
   cardDesc: {
     fontSize: '0.9rem',
-    color: '#64748b',
+    color: tokens.color.text.secondary,
     lineHeight: 1.6,
     margin: 0,
   },

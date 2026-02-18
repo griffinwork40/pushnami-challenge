@@ -1,5 +1,7 @@
 'use client';
 
+import { tokens } from '@pushnami/shared';
+
 interface CTAButtonProps {
   aggressive: boolean;
   onClick: () => void;
@@ -33,7 +35,7 @@ export default function CTAButton({ aggressive, onClick }: CTAButtonProps) {
 const baseBtn: React.CSSProperties = {
   display: 'inline-block',
   padding: '16px 40px',
-  borderRadius: '10px',
+  borderRadius: tokens.radius.lg,
   border: 'none',
   fontSize: '1.05rem',
   fontWeight: 700,
@@ -56,19 +58,19 @@ const styles: Record<string, React.CSSProperties> = {
   },
   btnCalm: {
     ...baseBtn,
-    background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-    color: '#fff',
-    boxShadow: '0 4px 24px rgba(99,102,241,0.4)',
+    background: `linear-gradient(135deg, ${tokens.color.brand.accent} 0%, ${tokens.color.brand.accentHover} 100%)`,
+    color: tokens.color.text.inverse,
+    boxShadow: `0 4px 24px rgba(99,102,241,0.4)`,
   },
   btnAggressive: {
     ...baseBtn,
-    background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-    color: '#fff',
-    boxShadow: '0 4px 24px rgba(239,68,68,0.45)',
+    background: `linear-gradient(135deg, ${tokens.color.cta.aggressive} 0%, ${tokens.color.cta.aggressiveHover} 100%)`,
+    color: tokens.color.text.inverse,
+    boxShadow: `0 4px 24px ${tokens.color.cta.aggressivePulse}`,
   },
   sub: {
     marginTop: '12px',
-    color: '#64748b',
+    color: tokens.color.text.muted,
     fontSize: '0.82rem',
   },
 };

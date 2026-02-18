@@ -1,6 +1,7 @@
 'use client';
 
 import type { Experiment } from '@pushnami/shared/types';
+import { tokens } from '@pushnami/shared';
 
 interface Props {
   experiment: Experiment;
@@ -21,7 +22,6 @@ export default function ExperimentPanel({ experiment, onUpdate, updating }: Prop
 
   return (
     <div className="card">
-      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
@@ -51,7 +51,6 @@ export default function ExperimentPanel({ experiment, onUpdate, updating }: Prop
         </div>
       </div>
 
-      {/* Variants */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: '.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '.05em' }}>
           Variants & Traffic Split
@@ -62,18 +61,17 @@ export default function ExperimentPanel({ experiment, onUpdate, updating }: Prop
             return (
               <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 80, fontSize: '.85rem', fontWeight: 500 }}>{v.name}</div>
-                <div style={{ flex: 1, height: 8, background: '#f1f5f9', borderRadius: 4, overflow: 'hidden' }}>
-                  <div style={{ width: `${split}%`, height: '100%', background: i === 0 ? '#3b82f6' : '#22c55e', borderRadius: 4, transition: 'width .3s' }} />
+                <div style={{ flex: 1, height: 8, background: tokens.color.border.subtle, borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${split}%`, height: '100%', background: i === 0 ? tokens.color.brand.primary : tokens.color.status.success, borderRadius: 4, transition: 'width .3s' }} />
                 </div>
-                <div style={{ width: 36, fontSize: '.8rem', color: 'var(--text-secondary)', textAlign: 'right' }}>{split}%</div>
+                <div style={{ width: 36, fontSize: '.8rem', color: 'var(--text-secondary)', textAlign: 'right' as const }}>{split}%</div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Meta */}
-      <div style={{ display: 'flex', gap: 20, fontSize: '.75rem', color: '#94a3b8', borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+      <div style={{ display: 'flex', gap: 20, fontSize: '.75rem', color: tokens.color.text.muted, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
         <span>ID: {experiment.id.slice(0, 8)}…</span>
         <span>Created: {new Date(experiment.createdAt).toLocaleDateString()}</span>
         <span>Updated: {new Date(experiment.updatedAt).toLocaleDateString()}</span>

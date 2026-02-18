@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { tokens } from '@pushnami/shared';
 
 export const metadata: Metadata = {
   title: 'Pushnami — Intelligent Push Notifications',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0, background: '#0f172a', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <body style={{ margin: 0, padding: 0, background: tokens.color.surface.dark, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         {children}
       </body>
     </html>

@@ -1,6 +1,7 @@
 'use client';
 
 import type { ExperimentStats } from '@pushnami/shared/types';
+import { tokens } from '@pushnami/shared';
 
 interface Props {
   stats: ExperimentStats[];
@@ -24,9 +25,9 @@ export default function StatsOverview({ stats }: Props) {
     }, 0) / stats.length;
 
   const cards: StatCard[] = [
-    { label: 'Total Visitors',    value: totalVisitors.toLocaleString(), icon: '👥', color: '#dbeafe' },
-    { label: 'Total Events',      value: totalEvents.toLocaleString(),   icon: '📈', color: '#dcfce7' },
-    { label: 'Avg Conversion',    value: `${(avgConversion * 100).toFixed(2)}%`, icon: '🎯', color: '#fef9c3' },
+    { label: 'Total Visitors',    value: totalVisitors.toLocaleString(), icon: '👥', color: tokens.color.status.infoBg },
+    { label: 'Total Events',      value: totalEvents.toLocaleString(),   icon: '📈', color: tokens.color.status.successBg },
+    { label: 'Avg Conversion',    value: `${(avgConversion * 100).toFixed(2)}%`, icon: '🎯', color: tokens.color.status.warningBg },
     { label: 'Active Experiments', value: String(stats.length),          icon: '🧪', color: '#fae8ff' },
   ];
 
@@ -36,7 +37,7 @@ export default function StatsOverview({ stats }: Props) {
         <div key={c.label} className="card" style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{
             width: 48, height: 48,
-            borderRadius: 12,
+            borderRadius: parseInt(tokens.radius.lg),
             background: c.color,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1.4rem',

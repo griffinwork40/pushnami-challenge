@@ -1,22 +1,27 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ─── Design Tokens (CSS Custom Properties) ──────────────────────────────────
+ * These map 1:1 with packages/shared/src/tokens.ts
+ * Components use var(--xxx) for CSS and tokens.color.xxx for inline styles.
+ * Single source of truth: tokens.ts — update there, mirror here.
+ */
 :root {
-  --sidebar-bg: #1e293b;
+  --sidebar-bg: #1e293b;       /* tokens.color.surface.sidebar */
   --sidebar-text: #cbd5e1;
-  --sidebar-active: #3b82f6;
-  --sidebar-hover: #334155;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --card-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-  --border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --blue: #3b82f6;
-  --blue-dark: #2563eb;
-  --green: #22c55e;
-  --yellow: #eab308;
-  --red: #ef4444;
-  --radius: 8px;
+  --sidebar-active: #3b82f6;   /* tokens.color.brand.primary */
+  --sidebar-hover: #334155;    /* tokens.color.surface.sidebarHover */
+  --bg: #f8fafc;               /* tokens.color.surface.page */
+  --card-bg: #ffffff;          /* tokens.color.surface.card */
+  --card-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06); /* tokens.shadow.card */
+  --border: #e2e8f0;           /* tokens.color.border.default */
+  --text-primary: #0f172a;     /* tokens.color.text.primary */
+  --text-secondary: #64748b;   /* tokens.color.text.secondary */
+  --blue: #3b82f6;             /* tokens.color.brand.primary */
+  --blue-dark: #2563eb;        /* tokens.color.brand.primaryHover */
+  --green: #22c55e;            /* tokens.color.status.success */
+  --yellow: #eab308;           /* tokens.color.status.warning */
+  --red: #ef4444;              /* tokens.color.status.error */
+  --radius: 8px;               /* tokens.radius.md */
 }
 
 html, body { height: 100%; }
